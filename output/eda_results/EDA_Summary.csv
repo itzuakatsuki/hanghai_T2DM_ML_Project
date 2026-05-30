@@ -1,0 +1,96 @@
+,Mean,SD,Missing_Count,Missing_%,Skewness
+Age (years),60.303,14.006,0,0.0,-0.175
+Height (m),1.655,0.095,0,0.0,-0.27
+Weight (kg),66.367,12.015,0,0.0,0.399
+BMI (kg/m2),24.094,3.312,0,0.0,1.122
+Duration of diabetes (years),8.691,8.257,0,0.0,1.044
+Fasting Plasma Glucose (mg/dl),164.693,61.882,0,0.0,1.677
+2-hour Postprandial Plasma Glucose (mg/dl),261.819,85.9,0,0.0,1.359
+Fasting C-peptide (nmol/L),0.458,0.244,0,0.0,1.416
+2-hour Postprandial C-peptide (nmol/L),0.908,0.557,0,0.0,3.132
+Fasting Insulin (pmol/L),96.838,215.482,0,0.0,8.038
+2-hour Postprandial insulin (pmol/L),273.737,230.99,0,0.0,5.43
+HbA1c (mmol/mol),74.018,25.639,0,0.0,0.677
+Glycated Albumin (%),23.62,7.719,0,0.0,0.944
+Total Cholesterol (mmol/L),4.806,1.036,0,0.0,0.36
+Triglyceride (mmol/L),1.762,0.985,0,0.0,2.949
+High-Density Lipoprotein Cholesterol (mmol/L),1.121,0.313,0,0.0,1.967
+Low-Density Lipoprotein Cholesterol (mmol/L),3.131,0.913,0,0.0,-0.046
+Creatinine (umol/L),63.435,18.852,0,0.0,1.157
+Estimated Glomerular Filtration Rate  (ml/min/1.73m2) ,114.55,37.421,0,0.0,1.359
+Uric Acid (mmol/L),330.886,86.75,0,0.0,0.636
+Blood Urea Nitrogen (mmol/L),5.934,1.701,0,0.0,1.951
+Gender_binary,0.541,0.501,0,0.0,-0.168
+Smoking_binary,0.156,0.364,0,0.0,1.923
+Alcohol_binary,0.119,0.326,0,0.0,2.382
+Macrovascular_Complication,0.367,0.484,0,0.0,0.56
+Microvascular_Complication,0.248,0.434,0,0.0,1.185
+Comorbidities_binary,0.642,0.482,0,0.0,-0.602
+Hypoglycemic_Agents_binary,0.954,0.21,0,0.0,-4.402
+Other_Agents_binary,0.615,0.489,0,0.0,-0.478
+Hypoglycemia_binary,0.092,0.29,0,0.0,2.868
+log_Height (m),0.976,0.036,0,0.0,-0.346
+log_Duration of diabetes (years),1.795,1.092,0,0.0,-0.376
+log_Fasting Plasma Glucose (mg/dl),5.052,0.336,0,0.0,0.376
+log_2-hour Postprandial Plasma Glucose (mg/dl),5.523,0.312,0,0.0,0.013
+log_Fasting C-peptide (nmol/L),0.365,0.155,0,0.0,0.928
+log_2-hour Postprandial C-peptide (nmol/L),0.615,0.236,0,0.0,1.335
+log_Fasting Insulin (pmol/L),4.162,0.702,0,0.0,1.527
+log_2-hour Postprandial insulin (pmol/L),5.439,0.58,0,0.0,-0.216
+log_HbA1c (mmol/mol),4.261,0.339,0,0.0,-0.037
+log_Glycated Albumin (%),3.157,0.308,0,0.0,-0.125
+log_Total Cholesterol (mmol/L),1.743,0.18,0,0.0,-0.202
+log_Triglyceride (mmol/L),0.971,0.283,0,0.0,1.235
+log_High-Density Lipoprotein Cholesterol (mmol/L),0.743,0.134,0,0.0,1.339
+log_Low-Density Lipoprotein Cholesterol (mmol/L),1.392,0.236,0,0.0,-0.665
+log_Creatinine (umol/L),4.126,0.283,0,0.0,-0.015
+log_Estimated Glomerular Filtration Rate  (ml/min/1.73m2) ,4.701,0.313,0,0.0,-0.225
+log_Uric Acid (mmol/L),5.771,0.264,0,0.0,-0.254
+log_Blood Urea Nitrogen (mmol/L),1.91,0.23,0,0.0,0.006
+Interaction_Age_BMI,1436.987,330.557,0,0.0,0.275
+Interaction_HbA1c_Duration,7.661,4.761,0,0.0,-0.298
+Interaction_FPG_TG,4.916,1.531,0,0.0,1.565
+Interaction_BMI_Smoking,3.823,9.064,0,0.0,2.055
+z_Age (years),0.0,1.005,0,0.0,-0.175
+z_Height (m),0.0,1.005,0,0.0,-0.27
+z_Weight (kg),-0.0,1.005,0,0.0,0.399
+z_BMI (kg/m2),0.0,1.005,0,0.0,1.122
+z_Duration of diabetes (years),-0.0,1.005,0,0.0,1.044
+z_Fasting Plasma Glucose (mg/dl),-0.0,1.005,0,0.0,1.677
+z_2-hour Postprandial Plasma Glucose (mg/dl),-0.0,1.005,0,0.0,1.359
+z_Fasting C-peptide (nmol/L),0.0,1.005,0,0.0,1.416
+z_2-hour Postprandial C-peptide (nmol/L),0.0,1.005,0,0.0,3.132
+z_Fasting Insulin (pmol/L),-0.0,1.005,0,0.0,8.038
+z_2-hour Postprandial insulin (pmol/L),0.0,1.005,0,0.0,5.43
+z_HbA1c (mmol/mol),-0.0,1.005,0,0.0,0.677
+z_Glycated Albumin (%),-0.0,1.005,0,0.0,0.944
+z_Total Cholesterol (mmol/L),-0.0,1.005,0,0.0,0.36
+z_Triglyceride (mmol/L),-0.0,1.005,0,0.0,2.949
+z_High-Density Lipoprotein Cholesterol (mmol/L),-0.0,1.005,0,0.0,1.967
+z_Low-Density Lipoprotein Cholesterol (mmol/L),0.0,1.005,0,0.0,-0.046
+z_Creatinine (umol/L),0.0,1.005,0,0.0,1.157
+z_Estimated Glomerular Filtration Rate  (ml/min/1.73m2) ,-0.0,1.005,0,0.0,1.359
+z_Uric Acid (mmol/L),0.0,1.005,0,0.0,0.636
+z_Blood Urea Nitrogen (mmol/L),-0.0,1.005,0,0.0,1.951
+z_log_Height (m),-0.0,1.005,0,0.0,-0.346
+z_log_Duration of diabetes (years),-0.0,1.005,0,0.0,-0.376
+z_log_Fasting Plasma Glucose (mg/dl),-0.0,1.005,0,0.0,0.376
+z_log_2-hour Postprandial Plasma Glucose (mg/dl),0.0,1.005,0,0.0,0.013
+z_log_Fasting C-peptide (nmol/L),-0.0,1.005,0,0.0,0.928
+z_log_2-hour Postprandial C-peptide (nmol/L),-0.0,1.005,0,0.0,1.335
+z_log_Fasting Insulin (pmol/L),-0.0,1.005,0,0.0,1.527
+z_log_2-hour Postprandial insulin (pmol/L),-0.0,1.005,0,0.0,-0.216
+z_log_HbA1c (mmol/mol),0.0,1.005,0,0.0,-0.037
+z_log_Glycated Albumin (%),-0.0,1.005,0,0.0,-0.125
+z_log_Total Cholesterol (mmol/L),0.0,1.005,0,0.0,-0.202
+z_log_Triglyceride (mmol/L),0.0,1.005,0,0.0,1.235
+z_log_High-Density Lipoprotein Cholesterol (mmol/L),0.0,1.005,0,0.0,1.339
+z_log_Low-Density Lipoprotein Cholesterol (mmol/L),0.0,1.005,0,0.0,-0.665
+z_log_Creatinine (umol/L),-0.0,1.005,0,0.0,-0.015
+z_log_Estimated Glomerular Filtration Rate  (ml/min/1.73m2) ,0.0,1.005,0,0.0,-0.225
+z_log_Uric Acid (mmol/L),-0.0,1.005,0,0.0,-0.254
+z_log_Blood Urea Nitrogen (mmol/L),-0.0,1.005,0,0.0,0.006
+z_Interaction_Age_BMI,0.0,1.005,0,0.0,0.275
+z_Interaction_HbA1c_Duration,0.0,1.005,0,0.0,-0.298
+z_Interaction_FPG_TG,-0.0,1.005,0,0.0,1.565
+z_Interaction_BMI_Smoking,0.0,1.005,0,0.0,2.055
