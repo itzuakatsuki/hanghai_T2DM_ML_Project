@@ -45,10 +45,11 @@ Shanghai_T2DM_ML_Project/
 │   │   ├── logistic_regression.py             # Logistic Regression baseline ✅
 │   │   └── linear_regression.py               # Linear Regression for continuous targets (🚧 Ready to upload)
 │   │
-│   ├── 04_advanced_models/                    # 🚧 PENDING
-│   │   ├── xgboost_classifier.py              # XGBoost for classification (🚧 Ready)
+│   ├── 04_advanced_models/                    # 🚧 NEEDS RESTRUCTURING
+│   │   ├── xgboost_classifier.py              # XGBoost for classification ✅
 │   │   ├── xgboost_regressor.py               # XGBoost for regression (🚧 Ready)
-│   │   └── clustering_analysis.py             # KMeans & GMM clustering (🚧 Ready)
+│   │   ├── clustering_analysis.py             # KMeans & GMM clustering (originally knnvsgmm.py) ✅
+│   │   └── knnvsgmm.py                        # KNN vs GMM comparison (original file) ✅
 │   │
 │   └── 05_model_evaluation/                   # ✅ COMPLETED
 │       └── visualize_results.py               # Generate visualizations & reports ✅
@@ -67,7 +68,26 @@ Shanghai_T2DM_ML_Project/
 │
 ├── README.md                                   # This file
 ├── .gitignore                                  # Git configuration
+├── DIRECTORY_FIX_GUIDE.md                     # Steps to fix directory naming
 └── requirements.txt                            # Python dependencies (optional)
+```
+
+### 🔧 Directory Restructuring Note
+
+⚠️ **IMPORTANT:** The project currently has two directories numbered `04`:
+- `04_advanced_models/` (placeholder with .gitkeep)
+- `04_main_models/` (contains actual model files)
+
+**Action Required:** See [DIRECTORY_FIX_GUIDE.md](DIRECTORY_FIX_GUIDE.md) for detailed steps to consolidate these into a single `04_advanced_models/` directory.
+
+**Quick Fix:**
+```bash
+# Local repository only
+cp code/04_main_models/* code/04_advanced_models/
+rm -rf code/04_main_models
+git add .
+git commit -m "Fix: Consolidate 04_main_models into 04_advanced_models"
+git push origin main
 ```
 
 ---
@@ -219,7 +239,7 @@ Shanghai_T2DM_ML_Project/
 ---
 
 #### Advanced: XGBoost Classifier
-**Status:** 🚧 READY TO UPLOAD
+**Status:** ✅ COMPLETED (Available in `04_main_models/`)
 
 **Script:** `code/04_advanced_models/xgboost_classifier.py`  
 **Output:** `output/model_results/XGBoost_Results.csv`
@@ -296,9 +316,9 @@ XGBRegressor(
 
 ### Clustering Analysis
 
-**Status:** 🚧 READY TO UPLOAD
+**Status:** ✅ COMPLETED (Available as `knnvsgmm.py` in `04_main_models/`)
 
-**Script:** `code/04_advanced_models/clustering_analysis.py`  
+**Script:** `code/04_advanced_models/clustering_analysis.py` (or `knnvsgmm.py`)  
 **Output:** `output/model_results/clustering_results/`
 
 #### K-Means Clustering
@@ -310,6 +330,9 @@ XGBRegressor(
 **Configuration:**
 - n_components: 3
 - Evaluation: Silhouette Score, Chi-square test
+
+#### K-Nearest Neighbors (KNN) Comparison
+**Analysis includes KNN vs other clustering methods**
 
 **Analysis:**
 - Cluster characteristics (Age, BMI, HbA1c, Duration means)
@@ -366,6 +389,13 @@ XGBRegressor(
 pip install pandas numpy scikit-learn xgboost scipy matplotlib seaborn
 ```
 
+### Important: Directory Setup First
+Before running models, ensure directory structure is fixed:
+```bash
+# See DIRECTORY_FIX_GUIDE.md for detailed steps
+# Quick: Move 04_main_models files to 04_advanced_models
+```
+
 ### Execution Order
 
 **1. Data Preprocessing (One-time setup)**
@@ -391,12 +421,14 @@ python logistic_regression.py
 python linear_regression.py
 ```
 
-**4. Advanced Models** (🚧 Pending Upload)
+**4. Advanced Models** (After directory fix)
 ```bash
 cd code/04_advanced_models/
 python xgboost_classifier.py
 python xgboost_regressor.py
 python clustering_analysis.py
+# or
+python knnvsgmm.py
 ```
 
 **5. Model Evaluation & Visualization**
@@ -473,14 +505,15 @@ This will generate all visualizations and reports in the `output/` directory.
 - ✅ Data preprocessing pipeline (all 5 steps)
 - ✅ EDA analysis script
 - ✅ Logistic Regression baseline model
+- ✅ XGBoost Classifier (available in 04_main_models/)
+- ✅ Clustering Analysis - KMeans, GMM, KNN (knnvsgmm.py in 04_main_models/)
 - ✅ Visualization and reporting script
 - ✅ Comprehensive README documentation
 
-### 🚧 Pending Upload (Code Ready)
-- 🚧 Linear Regression model
-- 🚧 XGBoost Classifier
-- 🚧 XGBoost Regressor
-- 🚧 Clustering analysis (KMeans + GMM)
+### 🚧 Pending Actions
+- 🚧 **Directory restructuring** - Consolidate 04_main_models/ into 04_advanced_models/
+- 🚧 Linear Regression model (ready to upload)
+- 🚧 XGBoost Regressor (ready to upload)
 
 ### 📥 Data Setup Required
 - 📥 Add `Shanghai_T2DM_Summary.csv` to `data/raw_data/`
@@ -489,12 +522,22 @@ This will generate all visualizations and reports in the `output/` directory.
 
 ## 💡 Next Steps
 
-1. **Upload remaining model scripts** from local repository
-2. **Add raw data file** to `data/raw_data/`
-3. **Run full pipeline** from start to finish
-4. **Review generated visualizations and reports**
-5. **Fine-tune hyperparameters** based on results
-6. **Deploy best performing models** to production
+1. **⚠️ Fix directory structure** - See [DIRECTORY_FIX_GUIDE.md](DIRECTORY_FIX_GUIDE.md)
+   ```bash
+   cp code/04_main_models/* code/04_advanced_models/
+   rm -rf code/04_main_models
+   git add . && git commit -m "Fix: Consolidate directories" && git push
+   ```
+
+2. **📥 Add raw data** to `data/raw_data/Shanghai_T2DM_Summary.csv`
+
+3. **🚀 Run full pipeline** from start to finish
+
+4. **📊 Review generated visualizations and reports**
+
+5. **🔧 Fine-tune hyperparameters** based on results
+
+6. **🚀 Deploy best performing models** to production
 
 ---
 
@@ -528,4 +571,13 @@ This will generate all visualizations and reports in the `output/` directory.
 
 ---
 
-**Status:** 🟡 In Progress (Core components completed, advanced models pending upload)
+## ⚠️ Current Issues
+
+### Directory Duplication
+- **Issue:** Two directories numbered `04` (04_advanced_models/ and 04_main_models/)
+- **Solution:** See [DIRECTORY_FIX_GUIDE.md](DIRECTORY_FIX_GUIDE.md)
+- **Action Required:** Local repository consolidation needed
+
+---
+
+**Status:** 🟡 In Progress (Core + Advanced components completed, directory restructuring and data upload pending)
