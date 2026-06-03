@@ -2,13 +2,15 @@
 
 ## 📋 Project Overview
 
-This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline models, and advanced machine learning models with rigorous evaluation.
+This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline models, advanced models, and comprehensive model evaluation with visualization.
 
 **Objectives:**
 - Predict diabetic complications (macrovascular and microvascular)
 - Predict hypoglycemia occurrence
+- Predict HbA1c levels (continuous regression)
 - Identify key risk factors through feature importance analysis
 - Compare model performance between traditional and advanced ML approaches
+- Cluster patients based on clinical characteristics
 
 ---
 
@@ -19,7 +21,7 @@ Shanghai_T2DM_ML_Project/
 │
 ├── data/
 │   ├── raw_data/
-│   │   └── Shanghai_T2DM_Summary.csv          # Original patient data
+│   │   └── Shanghai_T2DM_Summary.csv          # Original patient data (to be added)
 │   │
 │   └── processed_data/
 │       ├── Shanghai_T2DM_Categorical_Processed.csv
@@ -29,43 +31,43 @@ Shanghai_T2DM_ML_Project/
 │       └── Shanghai_T2DM_Standardized.csv     # Final input for models
 │
 ├── code/
-│   ├── 01_data_preprocessing/
+│   ├── 01_data_preprocessing/                 # ✅ COMPLETED
 │   │   ├── 01_categorical_processing.py       # Binary encoding
-│   │   ├── 02_missing_value_imputation.py    # Median imputation
+│   │   ├── 02_missing_value_imputation.py     # Median imputation
 │   │   ├── 03_log_transformation.py           # Log transformation for skewed features
 │   │   ├── 04_interaction_terms.py            # Feature interaction creation
 │   │   └── 05_standardization.py              # Z-score standardization
 │   │
-│   ├── 02_eda/
+│   ├── 02_eda/                                # ✅ COMPLETED
 │   │   └── eda_analysis.py                    # Exploratory Data Analysis
 │   │
-│   ├── 03_baseline_models/
-│   │   ├── logistic_regression.py             # Logistic Regression baseline
-│   │   └── linear_regression.py               # Linear Regression for continuous targets
+│   ├── 03_baseline_models/                    # ✅ PARTIAL (Logistic Regression done)
+│   │   ├── logistic_regression.py             # Logistic Regression baseline ✅
+│   │   └── linear_regression.py               # Linear Regression for continuous targets (🚧 Ready to upload)
 │   │
-│   ├── 04_advanced_models/
-│   │   ├── xgboost_classifier.py              # XGBoost for classification
-│   │   ├── xgboost_regressor.py               # XGBoost for regression
-│   │   └── clustering_analysis.py             # KMeans & GMM clustering
+│   ├── 04_advanced_models/                    # 🚧 PENDING
+│   │   ├── xgboost_classifier.py              # XGBoost for classification (🚧 Ready)
+│   │   ├── xgboost_regressor.py               # XGBoost for regression (🚧 Ready)
+│   │   └── clustering_analysis.py             # KMeans & GMM clustering (🚧 Ready)
 │   │
-│   └── 05_model_evaluation/
-│       └── model_comparison.py                # Consolidated evaluation
+│   └── 05_model_evaluation/                   # ✅ COMPLETED
+│       └── visualize_results.py               # Generate visualizations & reports ✅
 │
 ├── output/
-│   ├── eda_results/
-│   │   ├── EDA_Summary.csv
-│   │   └── eda_visualizations/
+│   ├── model_results/                         # Model evaluation outputs
+│   │   ├── Logistic_Regression_Results.csv    # LR classification results
+│   │   ├── XGBoost_Results.csv                # XGBoost classification results (🚧)
+│   │   ├── Regression_Model_Results.csv       # Regression model comparison
+│   │   ├── model_results_summary.html         # Interactive HTML report ✅
+│   │   └── results_summary.md                 # Markdown summary ✅
 │   │
-│   ├── model_results/
-│   │   ├── Logistic_Regression_Results.csv
-│   │   ├── XGBoost_Results.csv
-│   │   ├── Regression_Model_Results.csv
-│   │   └── clustering_results/
-│   │
-│   └── feature_importance/
-│       └── feature_analysis.csv
+│   └── visualizations/
+│       ├── classification_comparison.png      # Classification metrics chart ✅
+│       └── regression_comparison.png          # Regression metrics chart ✅
 │
-└── README.md                                   # This file
+├── README.md                                   # This file
+├── .gitignore                                  # Git configuration
+└── requirements.txt                            # Python dependencies (optional)
 ```
 
 ---
@@ -73,7 +75,9 @@ Shanghai_T2DM_ML_Project/
 ## 🔄 Data Processing Pipeline
 
 ### Step 1: Categorical Data Processing (`01_categorical_processing.py`)
-**Input:** `Shanghai_T2DM_Summary.csv`
+**Status:** ✅ COMPLETED
+
+**Input:** `Shanghai_T2DM_Summary.csv`  
 **Output:** `Shanghai_T2DM_Categorical_Processed.csv`
 
 **Transformations:**
@@ -92,7 +96,9 @@ Shanghai_T2DM_ML_Project/
 ---
 
 ### Step 2: Missing Value Imputation (`02_missing_value_imputation.py`)
-**Input:** `Shanghai_T2DM_Categorical_Processed.csv`
+**Status:** ✅ COMPLETED
+
+**Input:** `Shanghai_T2DM_Categorical_Processed.csv`  
 **Output:** `Shanghai_T2DM_Median_Imputed.csv`
 
 **Method:** Median imputation for numeric columns
@@ -102,7 +108,9 @@ Shanghai_T2DM_ML_Project/
 ---
 
 ### Step 3: Log Transformation (`03_log_transformation.py`)
-**Input:** `Shanghai_T2DM_Median_Imputed.csv`
+**Status:** ✅ COMPLETED
+
+**Input:** `Shanghai_T2DM_Median_Imputed.csv`  
 **Output:** `Shanghai_T2DM_Log_Transformed.csv`
 
 **Rationale:** Reduce skewness in right-skewed distributions
@@ -123,7 +131,9 @@ Shanghai_T2DM_ML_Project/
 ---
 
 ### Step 4: Feature Interaction Terms (`04_interaction_terms.py`)
-**Input:** `Shanghai_T2DM_Log_Transformed.csv`
+**Status:** ✅ COMPLETED
+
+**Input:** `Shanghai_T2DM_Log_Transformed.csv`  
 **Output:** `Shanghai_T2DM_Log_Interaction.csv`
 
 **Interaction terms created:**
@@ -137,7 +147,9 @@ Shanghai_T2DM_ML_Project/
 ---
 
 ### Step 5: Standardization (`05_standardization.py`)
-**Input:** `Shanghai_T2DM_Log_Interaction.csv`
+**Status:** ✅ COMPLETED
+
+**Input:** `Shanghai_T2DM_Log_Interaction.csv`  
 **Output:** `Shanghai_T2DM_Standardized.csv`
 
 **Method:** Z-score standardization (μ=0, σ=1)
@@ -159,8 +171,10 @@ Shanghai_T2DM_ML_Project/
 
 ## 📊 Exploratory Data Analysis (EDA)
 
-**Script:** `02_eda/eda_analysis.py`
-**Output:** `output/eda_results/EDA_Summary.csv`
+**Status:** ✅ COMPLETED
+
+**Script:** `code/02_eda/eda_analysis.py`  
+**Output:** `EDA_Summary.csv`
 
 **Analysis includes:**
 - Descriptive statistics (Mean, SD)
@@ -178,7 +192,9 @@ Shanghai_T2DM_ML_Project/
 ### Classification Models (Predict Complications & Hypoglycemia)
 
 #### Baseline: Logistic Regression
-**Script:** `03_baseline_models/logistic_regression.py`
+**Status:** ✅ COMPLETED
+
+**Script:** `code/03_baseline_models/logistic_regression.py`  
 **Output:** `output/model_results/Logistic_Regression_Results.csv`
 
 **Target Variables:**
@@ -203,7 +219,9 @@ Shanghai_T2DM_ML_Project/
 ---
 
 #### Advanced: XGBoost Classifier
-**Script:** `04_advanced_models/xgboost_classifier.py`
+**Status:** 🚧 READY TO UPLOAD
+
+**Script:** `code/04_advanced_models/xgboost_classifier.py`  
 **Output:** `output/model_results/XGBoost_Results.csv`
 
 **Target Variables:** Same as Logistic Regression
@@ -233,7 +251,9 @@ XGBClassifier(
 ### Regression Models (Predict HbA1c levels)
 
 #### Baseline: Linear Regression
-**Script:** `03_baseline_models/linear_regression.py`
+**Status:** 🚧 READY TO UPLOAD
+
+**Script:** `code/03_baseline_models/linear_regression.py`  
 **Output:** `output/model_results/Regression_Model_Results.csv` (rows 1-2)
 
 **Target Variable:** HbA1c (mmol/mol)
@@ -251,7 +271,9 @@ XGBClassifier(
 ---
 
 #### Advanced: XGBoost Regressor
-**Script:** `04_advanced_models/xgboost_regressor.py`
+**Status:** 🚧 READY TO UPLOAD
+
+**Script:** `code/04_advanced_models/xgboost_regressor.py`  
 **Output:** `output/model_results/Regression_Model_Results.csv` (rows 3-4)
 
 **Target Variable:** HbA1c (mmol/mol)
@@ -274,7 +296,9 @@ XGBRegressor(
 
 ### Clustering Analysis
 
-**Script:** `04_advanced_models/clustering_analysis.py`
+**Status:** 🚧 READY TO UPLOAD
+
+**Script:** `code/04_advanced_models/clustering_analysis.py`  
 **Output:** `output/model_results/clustering_results/`
 
 #### K-Means Clustering
@@ -295,29 +319,43 @@ XGBRegressor(
 
 ---
 
-## 📈 Model Evaluation & Comparison
+## 📈 Model Evaluation & Visualization
+
+**Status:** ✅ COMPLETED
+
+**Script:** `code/05_model_evaluation/visualize_results.py`
+
+**Outputs Generated:**
+1. **classification_comparison.png** - 6-panel figure comparing:
+   - Accuracy
+   - Precision
+   - Recall
+   - F1-Score
+   - AUC-ROC
+   - Class Distribution
+
+2. **regression_comparison.png** - 4-panel figure comparing:
+   - MAE
+   - RMSE
+   - MAPE
+   - R² Score
+
+3. **model_results_summary.html** - Interactive HTML report with:
+   - Formatted tables with mean ± SD values
+   - Professional styling and colors
+   - Metric explanations
+   - Exportable format
+
+4. **results_summary.md** - Markdown report with:
+   - Summary tables
+   - Key findings
+   - Next steps recommendations
+   - GitHub-compatible formatting
 
 ### Cross-Validation Strategy
 - **Classification:** 5-fold Stratified KFold (preserves class distribution)
 - **Regression:** 5-fold KFold
 - **Random State:** 42 (reproducibility)
-
-### Output Files
-
-**Classification Results:**
-```csv
-Target,Accuracy_mean,Accuracy_sd,Precision_mean,Precision_sd,...,Positive_Count,Negative_Count
-Macrovascular_Complication,0.XXX,0.XXX,...
-Microvascular_Complication,0.XXX,0.XXX,...
-Hypoglycemia_binary,0.XXX,0.XXX,...
-```
-
-**Regression Results:**
-```csv
-Model,MAE,RMSE,MAPE,R2
-Linear Regression,X.XXX,X.XXX,X.XXX,X.XXX
-XGBoost Regressor,X.XXX,X.XXX,X.XXX,X.XXX
-```
 
 ---
 
@@ -325,7 +363,7 @@ XGBoost Regressor,X.XXX,X.XXX,X.XXX,X.XXX
 
 ### Prerequisites
 ```bash
-pip install pandas numpy scikit-learn xgboost scipy matplotlib
+pip install pandas numpy scikit-learn xgboost scipy matplotlib seaborn
 ```
 
 ### Execution Order
@@ -353,7 +391,7 @@ python logistic_regression.py
 python linear_regression.py
 ```
 
-**4. Advanced Models**
+**4. Advanced Models** (🚧 Pending Upload)
 ```bash
 cd code/04_advanced_models/
 python xgboost_classifier.py
@@ -361,11 +399,13 @@ python xgboost_regressor.py
 python clustering_analysis.py
 ```
 
-**5. Model Comparison**
+**5. Model Evaluation & Visualization**
 ```bash
 cd code/05_model_evaluation/
-python model_comparison.py
+python visualize_results.py
 ```
+
+This will generate all visualizations and reports in the `output/` directory.
 
 ---
 
@@ -406,21 +446,63 @@ python model_comparison.py
 
 ---
 
-## 📊 Key Findings
+## 📊 Key Metrics Explanation
 
-(To be updated after model runs)
+### Classification Metrics
+| Metric | Definition | Range | Interpretation |
+|--------|-----------|-------|-----------------|
+| **Accuracy** | (TP+TN)/(TP+TN+FP+FN) | 0-1 | Overall correctness; affected by class imbalance |
+| **Precision** | TP/(TP+FP) | 0-1 | Of positive predictions, how many are correct |
+| **Recall** | TP/(TP+FN) | 0-1 | Of actual positives, how many are identified |
+| **F1-Score** | 2×(Precision×Recall)/(Precision+Recall) | 0-1 | Harmonic mean of Precision and Recall |
+| **AUC-ROC** | Area under ROC curve | 0-1 | Probability model ranks random positive higher |
 
-- Model performance comparison (Classification vs Regression)
-- Most important features for each target
-- Optimal hyperparameter configurations
-- Clustering insights
+### Regression Metrics
+| Metric | Definition | Range | Interpretation |
+|--------|-----------|-------|-----------------|
+| **MAE** | Σ\|y_pred - y_true\|/n | 0-∞ | Average absolute error; lower is better |
+| **RMSE** | √(Σ(y_pred - y_true)²/n) | 0-∞ | Penalizes larger errors; lower is better |
+| **MAPE** | Σ\|y_pred - y_true\|/\|y_true\|/n × 100 | 0-100% | Percentage error; easier to interpret |
+| **R²** | 1 - (SS_res/SS_tot) | 0-1 | Proportion of variance explained; 1=perfect fit |
+
+---
+
+## 📝 Project Status Summary
+
+### ✅ Completed Components
+- ✅ Data preprocessing pipeline (all 5 steps)
+- ✅ EDA analysis script
+- ✅ Logistic Regression baseline model
+- ✅ Visualization and reporting script
+- ✅ Comprehensive README documentation
+
+### 🚧 Pending Upload (Code Ready)
+- 🚧 Linear Regression model
+- 🚧 XGBoost Classifier
+- 🚧 XGBoost Regressor
+- 🚧 Clustering analysis (KMeans + GMM)
+
+### 📥 Data Setup Required
+- 📥 Add `Shanghai_T2DM_Summary.csv` to `data/raw_data/`
+
+---
+
+## 💡 Next Steps
+
+1. **Upload remaining model scripts** from local repository
+2. **Add raw data file** to `data/raw_data/`
+3. **Run full pipeline** from start to finish
+4. **Review generated visualizations and reports**
+5. **Fine-tune hyperparameters** based on results
+6. **Deploy best performing models** to production
 
 ---
 
 ## 👥 Team Information
 
 **Project Lead:** itzuakatsuki  
-**Analysis Date:** 2026-05-30
+**Repository:** https://github.com/itzuakatsuki/hanghai_T2DM_ML_Project  
+**Last Updated:** 2026-06-03
 
 ---
 
@@ -429,17 +511,21 @@ python model_comparison.py
 - Scikit-learn Documentation: https://scikit-learn.org/
 - XGBoost Documentation: https://xgboost.readthedocs.io/
 - Shanghai T2DM Study Data
+- Pandas Documentation: https://pandas.pydata.org/
+- Matplotlib Documentation: https://matplotlib.org/
 
 ---
 
-## 📝 Notes
+## 📝 Technical Notes
 
 - All results are reproducible (random_state=42)
 - Missing values handled via median imputation
 - Class imbalance addressed through `scale_pos_weight` in XGBoost
 - Feature standardization applied except for binary variables
 - Cross-validation ensures robust model evaluation
+- All output files use UTF-8 encoding for Chinese character support
+- High-resolution visualizations (300 DPI) for publication quality
 
 ---
 
-**Last Updated:** 2026-05-30
+**Status:** 🟡 In Progress (Core components completed, advanced models pending upload)
