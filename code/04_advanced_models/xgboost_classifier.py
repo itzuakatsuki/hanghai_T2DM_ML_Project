@@ -101,7 +101,9 @@ for target in target_cols:
         learning_rate=0.05,
         subsample=0.8,
         colsample_bytree=0.8,
-        scale_pos_weight=scale_pos_weight,
+        min_child_weight=3,
+        reg_lambda=1.0,
+        scale_pos_weight=neg / pos,
         eval_metric="logloss",
         random_state=42
     )
