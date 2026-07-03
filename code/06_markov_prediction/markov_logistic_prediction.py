@@ -78,6 +78,16 @@ df = df.sort_values(
     ["patient_id", "datetime"]
 )
 
+df["time_diff_min"] = (
+    df.groupby("patient_id")["datetime"]
+      .diff()
+      .dt.total_seconds() / 60
+)
+
+df = df[
+    df["time_diff_min"].between(14, 16)
+].copy()
+
 # =====================================
 # 4. 建立 t-1 特徵 (15分鐘前的狀態和血糖值)
 # =====================================
@@ -168,8 +178,9 @@ cv = GroupKFold(
 )
 
 model = LogisticRegression(
-    multi_class="multinomial",
-    max_iter=3000
+    max_iter=3000,
+    class_weight="balanced",
+    random_state=42
 )
 
 scores = cross_validate(
@@ -178,9 +189,11 @@ scores = cross_validate(
     y,
     cv=cv,
     groups=groups,
-    scoring=[
-        "accuracy"
-    ]
+    scoring={
+      "accuracy": "accuracy",
+      "balanced_accuracy": "balanced_accuracy",
+      "f1_macro": "f1_macro"
+    }
 )
 
 print("\n========================")
