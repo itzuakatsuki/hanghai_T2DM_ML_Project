@@ -50,7 +50,7 @@ Shanghai_T2DM_ML_Project/
 │   │   ├── xgboost_classifier.py              # XGBoost for classification
 │   │   ├── xgboost_regressor.py               # XGBoost for regression
 │   │   ├── clustering_analysis.py             # KMeans & GMM clustering
-│   │   └── knnvsgmm.py                        # KNN vs GMM comparison
+│   │   └── kmeansvsgmm.py                        # KNN vs GMM comparison
 │   │
 │   ├── 05_model_evaluation/                   # ✅ COMPLETED
 │   │   └── visualize_results.py               # Generate visualizations & reports
