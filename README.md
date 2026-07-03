@@ -2,7 +2,7 @@
 
 ## 📋 Project Overview
 
-This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline and advanced machine learning models, clustering analysis, and **real-time CGM time-series prediction**.
+This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline and advanced machine learning models, clustering analysis, and real-time CGM time-series prediction.
 
 **Objectives:**
 - Predict diabetic complications (macrovascular and microvascular)
@@ -11,7 +11,7 @@ This project implements comprehensive machine learning analysis on Shanghai Type
 - Identify key risk factors through feature importance analysis
 - Compare model performance between traditional and advanced ML approaches
 - Cluster patients based on clinical characteristics
-- **Predict glucose state transitions** using first-order Markov chains and logistic regression
+- Predict glucose state transitions using first-order Markov chains and logistic regression
 
 ---
 
@@ -55,10 +55,9 @@ Shanghai_T2DM_ML_Project/
 │   ├── 05_model_evaluation/                   # ✅ COMPLETED
 │   │   └── visualize_results.py               # Generate visualizations & reports
 │   │
-│   └── 06_markov_prediction/                  # ✨ NEW: Real-time CGM Prediction
+│   └── 06_markov_prediction/                  # ✨ NEW: CGM Time-Series Prediction
 │       ├── data_preparation.py                # Prepare CGM time-series data
-│       ├── markov_logistic_prediction.py      # Markov chain + Logistic regression
-│       └── README.md                          # CGM module documentation
+│       └── markov_logistic_prediction.py      # Markov chain + Logistic regression
 │
 ├── output/
 │   ├── model_results/                         # Model evaluation outputs
@@ -336,63 +335,6 @@ XGBRegressor(
 
 ---
 
-## 📈 Real-Time CGM Time-Series Prediction
-
-**Status:** ✨ NEW - **Ready to Deploy**
-
-**Module Location:** `code/06_markov_prediction/`
-
-### Workflow
-
-```
-CGM Continuous Glucose Monitoring Data
-            ↓
-      Data Preparation
-    (Cleaning, Formatting)
-            ↓
-   First-Order Markov Chain
-  (State Transition Analysis)
-            ↓
-     Transition Matrix
-   (Probability Analysis)
-            ↓
-    Logistic Regression
-  (Multi-class Prediction)
-            ↓
-Predict Glucose State
-  (Next 15 Minutes)
-```
-
-### Blood Glucose State Classification
-
-| State | Code | Range (mg/dL) | Clinical Meaning |
-|-------|------|---------------|------------------|
-| Low | S0 | < 70 | Hypoglycemia (high risk) |
-| Target | S1 | 70-180 | Normal/Stable |
-| High | S2 | > 180 | Hyperglycemia (monitoring needed) |
-
-### Feature Engineering
-
-| Feature | Description | Source |
-|---------|-------------|--------|
-| `prev_state` | Blood glucose state at t-1 (S0/S1/S2) | Markov property |
-| `prev_cgm` | CGM value at t-1 (mg/dL) | First-order lag |
-| `prev_delta` | Blood glucose change (CGM_t-1 - CGM_t-2) | Trend information |
-
-### Model Configuration
-
-**Markov Chain:**
-- **Type:** First-order discrete-time Markov chain
-- **Analysis:** Transition probability matrix computation
-- **Output:** State transition patterns per patient
-
-**Logistic Regression:**
-- **Type:** Multinomial classification
-- **Cross-Validation:** 5-fold patient-level stratification
-- **Metrics:** Accuracy, Precision, Recall, F1-Score, Confusion Matrix
-
----
-
 ## 📈 Model Evaluation & Visualization
 
 **Status:** ✅ COMPLETED
@@ -429,8 +371,33 @@ Predict Glucose State
 ### Cross-Validation Strategy
 - **Classification:** 5-fold Stratified KFold (preserves class distribution)
 - **Regression:** 5-fold KFold
-- **CGM Prediction:** 5-fold patient-level GroupKFold
 - **Random State:** 42 (reproducibility)
+
+---
+
+## 🕐 CGM Markov Chain Prediction
+
+**Status:** ✨ NEW - **Ready to Deploy**
+
+**Module Location:** `code/06_markov_prediction/`
+
+This module uses **Continuous Glucose Monitoring (CGM)** data to define glucose states and predict the next 15-minute glucose state using a **first-order Markov chain** and **logistic regression**.
+
+### Workflow
+1. **Data Preparation** - Read and clean CGM time-series data from Excel files
+2. **State Definition** - Classify glucose values into three states:
+   - S0: Low (<70 mg/dL)
+   - S1: Target (70-180 mg/dL)
+   - S2: High (>180 mg/dL)
+3. **Markov Chain Analysis** - Compute state transition probabilities
+4. **Logistic Regression** - Train multinomial classifier using Markov features
+5. **Prediction** - Predict glucose state for next 15-minute interval
+
+### Key Features
+- First-order Markov chain captures glucose state transitions
+- Features: previous state, previous CGM value, and glucose change rate
+- Patient-level cross-validation prevents data leakage
+- Outputs: transition matrix, model coefficients, confusion matrix
 
 ---
 
@@ -481,7 +448,7 @@ cd code/05_model_evaluation/
 python visualize_results.py
 ```
 
-**6. CGM Time-Series Prediction** ✨ NEW
+**6. CGM Markov Chain Prediction** ✨ NEW
 ```bash
 cd code/06_markov_prediction/
 python data_preparation.py
@@ -527,15 +494,6 @@ This will generate all visualizations, reports, and predictions in the `output/`
 - **z_[feature]**: Standardized (z-score normalized) features
 - **Interaction_[A]_[B]**: Feature interaction terms
 
-### CGM Time-Series Data
-- **datetime**: Timestamp of CGM measurement
-- **CGM**: Blood glucose value (mg/dL)
-- **patient_id**: Patient identifier
-- **state**: Glucose state classification (0=Low, 1=Target, 2=High)
-- **prev_state**: Previous time glucose state
-- **prev_cgm**: Previous time CGM value
-- **prev_delta**: Blood glucose change rate
-
 ---
 
 ## 📊 Key Metrics Explanation
@@ -557,13 +515,6 @@ This will generate all visualizations, reports, and predictions in the `output/`
 | **MAPE** | Σ\|y_pred - y_true\|/\|y_true\|/n × 100 | 0-100% | Percentage error; easier to interpret |
 | **R²** | 1 - (SS_res/SS_tot) | 0-1 | Proportion of variance explained; 1=perfect fit |
 
-### Time-Series Prediction Metrics
-| Metric | Definition | Range | Interpretation |
-|--------|-----------|-------|----------------|
-| **State Accuracy** | Correct state predictions / Total predictions | 0-1 | How often next glucose state is correctly predicted |
-| **Transition Coverage** | States captured by Markov matrix | 0-1 | Fraction of state transitions observed in training |
-| **Markov Stability** | Diagonal values in TPM | 0-1 | Tendency to remain in same state (high=stable) |
-
 ---
 
 ## 📝 Project Status Summary
@@ -578,7 +529,7 @@ This will generate all visualizations, reports, and predictions in the `output/`
 - ✅ Clustering Analysis (KMeans + GMM)
 - ✅ KNN vs GMM comparison (knnvsgmm.py)
 - ✅ Visualization and reporting script
-- ✨ **CGM Time-Series Prediction (Markov + Logistic Regression)**
+- ✨ **CGM Markov Chain Prediction Module**
 - ✅ Comprehensive README documentation
 - ✅ Directory structure organized and validated
 
@@ -601,11 +552,9 @@ Project is ready to run! Requirements:
 
 4. **📈 Compare model performance** between traditional and advanced approaches
 
-5. **🔍 Analyze time-series predictions** from CGM Markov model
+5. **🔧 Fine-tune hyperparameters** based on initial results
 
-6. **🔧 Fine-tune hyperparameters** based on initial results
-
-7. **📊 Deploy** best performing models to production
+6. **🚀 Deploy** best performing models to production
 
 ---
 
@@ -624,8 +573,6 @@ Project is ready to run! Requirements:
 - Shanghai T2DM Study Data
 - Pandas Documentation: https://pandas.pydata.org/
 - Matplotlib Documentation: https://matplotlib.org/
-- Markov Chain Analysis: https://en.wikipedia.org/wiki/Markov_chain
-- CGM Data Analysis: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5329148/
 
 ---
 
@@ -636,7 +583,6 @@ Project is ready to run! Requirements:
 - Class imbalance addressed through `scale_pos_weight` in XGBoost
 - Feature standardization applied except for binary variables
 - Cross-validation ensures robust model evaluation
-- Patient-level cross-validation prevents data leakage in time-series predictions
 - All output files use UTF-8 encoding for Chinese character support
 - High-resolution visualizations (300 DPI) for publication quality
 
