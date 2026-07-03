@@ -310,7 +310,7 @@ XGBRegressor(
 
 **Scripts:** 
 - `code/04_advanced_models/clustering_analysis.py`
-- `code/04_advanced_models/knnvsgmm.py` (KNN vs GMM comparison)
+- `code/04_advanced_models/kmeansvsgmm.py` (K-means vs GMM comparison)
 
 **Output:** `output/model_results/clustering_results/`
 
@@ -323,9 +323,6 @@ XGBRegressor(
 **Configuration:**
 - n_components: 3
 - Evaluation: Silhouette Score, Chi-square test
-
-#### K-Nearest Neighbors (KNN) Analysis
-**Comparison:** KNN vs other clustering methods
 
 **Analysis:**
 - Cluster characteristics (Age, BMI, HbA1c, Duration means)
@@ -527,7 +524,7 @@ This will generate all visualizations, reports, and predictions in the `output/`
 - ✅ XGBoost Classifier
 - ✅ XGBoost Regressor
 - ✅ Clustering Analysis (KMeans + GMM)
-- ✅ KNN vs GMM comparison (knnvsgmm.py)
+- ✅ K-means vs GMM comparison (kmeansvsgmm.py)
 - ✅ Visualization and reporting script
 - ✨ **CGM Markov Chain Prediction Module**
 - ✅ Comprehensive README documentation
