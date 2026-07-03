@@ -77,13 +77,6 @@ chi2, p, dof, expected = chi2_contingency(table)
 
 print("K-means Microvascular p-value =", p)
 
-score2 = silhouette_score(
-    X,
-    df["Cluster"]
-)
-
-print("KNN Silhouette =", score2)
-
 #正式分群
 #==============
 
