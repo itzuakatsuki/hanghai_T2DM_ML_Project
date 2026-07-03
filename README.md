@@ -2,7 +2,7 @@
 
 ## 📋 Project Overview
 
-This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline models, advanced models, and comprehensive model evaluation with visualization.
+This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline and advanced machine learning models, clustering analysis, and real-time CGM time-series prediction.
 
 **Objectives:**
 - Predict diabetic complications (macrovascular and microvascular)
@@ -11,6 +11,7 @@ This project implements comprehensive machine learning analysis on Shanghai Type
 - Identify key risk factors through feature importance analysis
 - Compare model performance between traditional and advanced ML approaches
 - Cluster patients based on clinical characteristics
+- Predict glucose state transitions using first-order Markov chains and logistic regression
 
 ---
 
@@ -51,8 +52,12 @@ Shanghai_T2DM_ML_Project/
 │   │   ├── clustering_analysis.py             # KMeans & GMM clustering
 │   │   └── knnvsgmm.py                        # KNN vs GMM comparison
 │   │
-│   └── 05_model_evaluation/                   # ✅ COMPLETED
-│       └── visualize_results.py               # Generate visualizations & reports
+│   ├── 05_model_evaluation/                   # ✅ COMPLETED
+│   │   └── visualize_results.py               # Generate visualizations & reports
+│   │
+│   └── 06_markov_prediction/                  # ✨ NEW: CGM Time-Series Prediction
+│       ├── data_preparation.py                # Prepare CGM time-series data
+│       └── markov_logistic_prediction.py      # Markov chain + Logistic regression
 │
 ├── output/
 │   ├── model_results/                         # Model evaluation outputs
@@ -65,6 +70,11 @@ Shanghai_T2DM_ML_Project/
 │   └── visualizations/
 │       ├── classification_comparison.png      # Classification metrics chart
 │       └── regression_comparison.png          # Regression metrics chart
+│
+├── Shanghai_T2DM/                             # CGM Excel data folder (user-created)
+│   ├── patient_001.xlsx                       # CGM time-series per patient
+│   ├── patient_002.xlsx
+│   └── ...
 │
 ├── README.md                                   # This file
 └── .gitignore                                  # Git configuration
@@ -365,11 +375,37 @@ XGBRegressor(
 
 ---
 
+## 🕐 CGM Markov Chain Prediction
+
+**Status:** ✨ NEW - **Ready to Deploy**
+
+**Module Location:** `code/06_markov_prediction/`
+
+This module uses **Continuous Glucose Monitoring (CGM)** data to define glucose states and predict the next 15-minute glucose state using a **first-order Markov chain** and **logistic regression**.
+
+### Workflow
+1. **Data Preparation** - Read and clean CGM time-series data from Excel files
+2. **State Definition** - Classify glucose values into three states:
+   - S0: Low (<70 mg/dL)
+   - S1: Target (70-180 mg/dL)
+   - S2: High (>180 mg/dL)
+3. **Markov Chain Analysis** - Compute state transition probabilities
+4. **Logistic Regression** - Train multinomial classifier using Markov features
+5. **Prediction** - Predict glucose state for next 15-minute interval
+
+### Key Features
+- First-order Markov chain captures glucose state transitions
+- Features: previous state, previous CGM value, and glucose change rate
+- Patient-level cross-validation prevents data leakage
+- Outputs: transition matrix, model coefficients, confusion matrix
+
+---
+
 ## 🚀 How to Run
 
 ### Prerequisites
 ```bash
-pip install pandas numpy scikit-learn xgboost scipy matplotlib seaborn
+pip install pandas numpy scikit-learn xgboost scipy matplotlib seaborn openpyxl
 ```
 
 ### Execution Order
@@ -412,7 +448,14 @@ cd code/05_model_evaluation/
 python visualize_results.py
 ```
 
-This will generate all visualizations and reports in the `output/` directory.
+**6. CGM Markov Chain Prediction** ✨ NEW
+```bash
+cd code/06_markov_prediction/
+python data_preparation.py
+python markov_logistic_prediction.py
+```
+
+This will generate all visualizations, reports, and predictions in the `output/` directory.
 
 ---
 
@@ -486,26 +529,30 @@ This will generate all visualizations and reports in the `output/` directory.
 - ✅ Clustering Analysis (KMeans + GMM)
 - ✅ KNN vs GMM comparison (knnvsgmm.py)
 - ✅ Visualization and reporting script
+- ✨ **CGM Markov Chain Prediction Module**
 - ✅ Comprehensive README documentation
 - ✅ Directory structure organized and validated
 
 ### 📥 Ready for Execution
-Project is ready to run! Only requirement:
+Project is ready to run! Requirements:
 - 📥 Add `Shanghai_T2DM_Summary.csv` to `data/raw_data/`
+- 📥 Add CGM Excel files to `Shanghai_T2DM/` folder (for time-series predictions)
 
 ---
 
 ## 💡 Next Steps
 
-1. **📥 Add raw data** to `data/raw_data/Shanghai_T2DM_Summary.csv`
+1. **📥 Add raw data**
+   - Add `Shanghai_T2DM_Summary.csv` to `data/raw_data/`
+   - Add CGM Excel files to `Shanghai_T2DM/` folder
 
 2. **🚀 Run full pipeline** from start to finish following the "How to Run" section
 
 3. **📊 Review generated visualizations and reports** in the `output/` directory
 
-4. **🔧 Fine-tune hyperparameters** based on initial results
+4. **📈 Compare model performance** between traditional and advanced approaches
 
-5. **📈 Analyze model performance** and select best models
+5. **🔧 Fine-tune hyperparameters** based on initial results
 
 6. **🚀 Deploy** best performing models to production
 
@@ -515,7 +562,7 @@ Project is ready to run! Only requirement:
 
 **Project Lead:** itzuakatsuki  
 **Repository:** https://github.com/itzuakatsuki/hanghai_T2DM_ML_Project  
-**Last Updated:** 2026-06-03
+**Last Updated:** 2026-07-03
 
 ---
 
