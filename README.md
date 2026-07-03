@@ -500,7 +500,7 @@ This will generate all visualizations, reports, and predictions in the `output/`
 
 ### Classification Metrics
 | Metric | Definition | Range | Interpretation |
-|--------|-----------|-------|-----------------|
+|--------|-----------|-------|----------------|
 | **Accuracy** | (TP+TN)/(TP+TN+FP+FN) | 0-1 | Overall correctness; affected by class imbalance |
 | **Precision** | TP/(TP+FP) | 0-1 | Of positive predictions, how many are correct |
 | **Recall** | TP/(TP+FN) | 0-1 | Of actual positives, how many are identified |
@@ -509,7 +509,7 @@ This will generate all visualizations, reports, and predictions in the `output/`
 
 ### Regression Metrics
 | Metric | Definition | Range | Interpretation |
-|--------|-----------|-------|-----------------|
+|--------|-----------|-------|----------------|
 | **MAE** | Σ\|y_pred - y_true\|/n | 0-∞ | Average absolute error; lower is better |
 | **RMSE** | √(Σ(y_pred - y_true)²/n) | 0-∞ | Penalizes larger errors; lower is better |
 | **MAPE** | Σ\|y_pred - y_true\|/\|y_true\|/n × 100 | 0-100% | Percentage error; easier to interpret |
