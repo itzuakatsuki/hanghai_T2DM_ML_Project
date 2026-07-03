@@ -2,7 +2,7 @@
 
 ## 📋 Project Overview
 
-This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline models, advanced models, and comprehensive model evaluation with visualization.
+This project implements comprehensive machine learning analysis on Shanghai Type 2 Diabetes Mellitus patient data. The analysis includes data preprocessing, exploratory data analysis (EDA), baseline and advanced machine learning models, clustering analysis, and **real-time CGM time-series prediction**.
 
 **Objectives:**
 - Predict diabetic complications (macrovascular and microvascular)
@@ -11,6 +11,7 @@ This project implements comprehensive machine learning analysis on Shanghai Type
 - Identify key risk factors through feature importance analysis
 - Compare model performance between traditional and advanced ML approaches
 - Cluster patients based on clinical characteristics
+- **Predict glucose state transitions** using first-order Markov chains and logistic regression
 
 ---
 
@@ -51,8 +52,13 @@ Shanghai_T2DM_ML_Project/
 │   │   ├── clustering_analysis.py             # KMeans & GMM clustering
 │   │   └── knnvsgmm.py                        # KNN vs GMM comparison
 │   │
-│   └── 05_model_evaluation/                   # ✅ COMPLETED
-│       └── visualize_results.py               # Generate visualizations & reports
+│   ├── 05_model_evaluation/                   # ✅ COMPLETED
+│   │   └── visualize_results.py               # Generate visualizations & reports
+│   │
+│   └── 06_markov_prediction/                  # ✨ NEW: Real-time CGM Prediction
+│       ├── data_preparation.py                # Prepare CGM time-series data
+│       ├── markov_logistic_prediction.py      # Markov chain + Logistic regression
+│       └── README.md                          # CGM module documentation
 │
 ├── output/
 │   ├── model_results/                         # Model evaluation outputs
@@ -65,6 +71,11 @@ Shanghai_T2DM_ML_Project/
 │   └── visualizations/
 │       ├── classification_comparison.png      # Classification metrics chart
 │       └── regression_comparison.png          # Regression metrics chart
+│
+├── Shanghai_T2DM/                             # CGM Excel data folder (user-created)
+│   ├── patient_001.xlsx                       # CGM time-series per patient
+│   ├── patient_002.xlsx
+│   └── ...
 │
 ├── README.md                                   # This file
 └── .gitignore                                  # Git configuration
@@ -325,6 +336,63 @@ XGBRegressor(
 
 ---
 
+## 📈 Real-Time CGM Time-Series Prediction
+
+**Status:** ✨ NEW - **Ready to Deploy**
+
+**Module Location:** `code/06_markov_prediction/`
+
+### Workflow
+
+```
+CGM Continuous Glucose Monitoring Data
+            ↓
+      Data Preparation
+    (Cleaning, Formatting)
+            ↓
+   First-Order Markov Chain
+  (State Transition Analysis)
+            ↓
+     Transition Matrix
+   (Probability Analysis)
+            ↓
+    Logistic Regression
+  (Multi-class Prediction)
+            ↓
+Predict Glucose State
+  (Next 15 Minutes)
+```
+
+### Blood Glucose State Classification
+
+| State | Code | Range (mg/dL) | Clinical Meaning |
+|-------|------|---------------|------------------|
+| Low | S0 | < 70 | Hypoglycemia (high risk) |
+| Target | S1 | 70-180 | Normal/Stable |
+| High | S2 | > 180 | Hyperglycemia (monitoring needed) |
+
+### Feature Engineering
+
+| Feature | Description | Source |
+|---------|-------------|--------|
+| `prev_state` | Blood glucose state at t-1 (S0/S1/S2) | Markov property |
+| `prev_cgm` | CGM value at t-1 (mg/dL) | First-order lag |
+| `prev_delta` | Blood glucose change (CGM_t-1 - CGM_t-2) | Trend information |
+
+### Model Configuration
+
+**Markov Chain:**
+- **Type:** First-order discrete-time Markov chain
+- **Analysis:** Transition probability matrix computation
+- **Output:** State transition patterns per patient
+
+**Logistic Regression:**
+- **Type:** Multinomial classification
+- **Cross-Validation:** 5-fold patient-level stratification
+- **Metrics:** Accuracy, Precision, Recall, F1-Score, Confusion Matrix
+
+---
+
 ## 📈 Model Evaluation & Visualization
 
 **Status:** ✅ COMPLETED
@@ -361,6 +429,7 @@ XGBRegressor(
 ### Cross-Validation Strategy
 - **Classification:** 5-fold Stratified KFold (preserves class distribution)
 - **Regression:** 5-fold KFold
+- **CGM Prediction:** 5-fold patient-level GroupKFold
 - **Random State:** 42 (reproducibility)
 
 ---
@@ -369,7 +438,7 @@ XGBRegressor(
 
 ### Prerequisites
 ```bash
-pip install pandas numpy scikit-learn xgboost scipy matplotlib seaborn
+pip install pandas numpy scikit-learn xgboost scipy matplotlib seaborn openpyxl
 ```
 
 ### Execution Order
@@ -412,7 +481,14 @@ cd code/05_model_evaluation/
 python visualize_results.py
 ```
 
-This will generate all visualizations and reports in the `output/` directory.
+**6. CGM Time-Series Prediction** ✨ NEW
+```bash
+cd code/06_markov_prediction/
+python data_preparation.py
+python markov_logistic_prediction.py
+```
+
+This will generate all visualizations, reports, and predictions in the `output/` directory.
 
 ---
 
@@ -451,13 +527,22 @@ This will generate all visualizations and reports in the `output/` directory.
 - **z_[feature]**: Standardized (z-score normalized) features
 - **Interaction_[A]_[B]**: Feature interaction terms
 
+### CGM Time-Series Data
+- **datetime**: Timestamp of CGM measurement
+- **CGM**: Blood glucose value (mg/dL)
+- **patient_id**: Patient identifier
+- **state**: Glucose state classification (0=Low, 1=Target, 2=High)
+- **prev_state**: Previous time glucose state
+- **prev_cgm**: Previous time CGM value
+- **prev_delta**: Blood glucose change rate
+
 ---
 
 ## 📊 Key Metrics Explanation
 
 ### Classification Metrics
 | Metric | Definition | Range | Interpretation |
-|--------|-----------|-------|-----------------|
+|--------|-----------|-------|----------------|
 | **Accuracy** | (TP+TN)/(TP+TN+FP+FN) | 0-1 | Overall correctness; affected by class imbalance |
 | **Precision** | TP/(TP+FP) | 0-1 | Of positive predictions, how many are correct |
 | **Recall** | TP/(TP+FN) | 0-1 | Of actual positives, how many are identified |
@@ -466,11 +551,18 @@ This will generate all visualizations and reports in the `output/` directory.
 
 ### Regression Metrics
 | Metric | Definition | Range | Interpretation |
-|--------|-----------|-------|-----------------|
+|--------|-----------|-------|----------------|
 | **MAE** | Σ\|y_pred - y_true\|/n | 0-∞ | Average absolute error; lower is better |
 | **RMSE** | √(Σ(y_pred - y_true)²/n) | 0-∞ | Penalizes larger errors; lower is better |
 | **MAPE** | Σ\|y_pred - y_true\|/\|y_true\|/n × 100 | 0-100% | Percentage error; easier to interpret |
 | **R²** | 1 - (SS_res/SS_tot) | 0-1 | Proportion of variance explained; 1=perfect fit |
+
+### Time-Series Prediction Metrics
+| Metric | Definition | Range | Interpretation |
+|--------|-----------|-------|----------------|
+| **State Accuracy** | Correct state predictions / Total predictions | 0-1 | How often next glucose state is correctly predicted |
+| **Transition Coverage** | States captured by Markov matrix | 0-1 | Fraction of state transitions observed in training |
+| **Markov Stability** | Diagonal values in TPM | 0-1 | Tendency to remain in same state (high=stable) |
 
 ---
 
@@ -486,28 +578,34 @@ This will generate all visualizations and reports in the `output/` directory.
 - ✅ Clustering Analysis (KMeans + GMM)
 - ✅ KNN vs GMM comparison (knnvsgmm.py)
 - ✅ Visualization and reporting script
+- ✨ **CGM Time-Series Prediction (Markov + Logistic Regression)**
 - ✅ Comprehensive README documentation
 - ✅ Directory structure organized and validated
 
 ### 📥 Ready for Execution
-Project is ready to run! Only requirement:
+Project is ready to run! Requirements:
 - 📥 Add `Shanghai_T2DM_Summary.csv` to `data/raw_data/`
+- 📥 Add CGM Excel files to `Shanghai_T2DM/` folder (for time-series predictions)
 
 ---
 
 ## 💡 Next Steps
 
-1. **📥 Add raw data** to `data/raw_data/Shanghai_T2DM_Summary.csv`
+1. **📥 Add raw data**
+   - Add `Shanghai_T2DM_Summary.csv` to `data/raw_data/`
+   - Add CGM Excel files to `Shanghai_T2DM/` folder
 
 2. **🚀 Run full pipeline** from start to finish following the "How to Run" section
 
 3. **📊 Review generated visualizations and reports** in the `output/` directory
 
-4. **🔧 Fine-tune hyperparameters** based on initial results
+4. **📈 Compare model performance** between traditional and advanced approaches
 
-5. **📈 Analyze model performance** and select best models
+5. **🔍 Analyze time-series predictions** from CGM Markov model
 
-6. **🚀 Deploy** best performing models to production
+6. **🔧 Fine-tune hyperparameters** based on initial results
+
+7. **📊 Deploy** best performing models to production
 
 ---
 
@@ -515,7 +613,7 @@ Project is ready to run! Only requirement:
 
 **Project Lead:** itzuakatsuki  
 **Repository:** https://github.com/itzuakatsuki/hanghai_T2DM_ML_Project  
-**Last Updated:** 2026-06-03
+**Last Updated:** 2026-07-03
 
 ---
 
@@ -526,6 +624,8 @@ Project is ready to run! Only requirement:
 - Shanghai T2DM Study Data
 - Pandas Documentation: https://pandas.pydata.org/
 - Matplotlib Documentation: https://matplotlib.org/
+- Markov Chain Analysis: https://en.wikipedia.org/wiki/Markov_chain
+- CGM Data Analysis: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5329148/
 
 ---
 
@@ -536,6 +636,7 @@ Project is ready to run! Only requirement:
 - Class imbalance addressed through `scale_pos_weight` in XGBoost
 - Feature standardization applied except for binary variables
 - Cross-validation ensures robust model evaluation
+- Patient-level cross-validation prevents data leakage in time-series predictions
 - All output files use UTF-8 encoding for Chinese character support
 - High-resolution visualizations (300 DPI) for publication quality
 
